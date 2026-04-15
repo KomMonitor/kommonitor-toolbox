@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { KommonitorComponents } from './kommonitor-components';
+import { KommonitorToolbox } from './kommonitor-toolbox';
 
-describe('KommonitorComponents', () => {
-  let component: KommonitorComponents;
-  let fixture: ComponentFixture<KommonitorComponents>;
+describe('KommonitorToolbox', () => {
+  let component: KommonitorToolbox;
+  let fixture: ComponentFixture<KommonitorToolbox>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [KommonitorComponents],
+      imports: [KommonitorToolbox],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(KommonitorComponents);
+    fixture = TestBed.createComponent(KommonitorToolbox);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

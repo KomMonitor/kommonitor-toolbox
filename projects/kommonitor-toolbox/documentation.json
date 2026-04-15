@@ -14,7 +14,7 @@
                 "name": "EinDataset",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -26,7 +26,7 @@
                 "name": "emptyData",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "TimeseriesData",
@@ -36,7 +36,7 @@
                 "name": "Large",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -46,7 +46,7 @@
                 "name": "Leer",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -58,7 +58,7 @@
                 "name": "LoggedIn",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -68,7 +68,7 @@
                 "name": "LoggedIn",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -78,7 +78,7 @@
                 "name": "LoggedOut",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -88,7 +88,7 @@
                 "name": "LoggedOut",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -98,7 +98,7 @@
                 "name": "MehrereDatasets",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -110,7 +110,7 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<ButtonComponent>",
@@ -120,7 +120,7 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<HeaderComponent>",
@@ -130,7 +130,7 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<PageComponent>",
@@ -140,7 +140,7 @@
                 "name": "meta",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Meta<TimeseriesChartComponent>",
@@ -150,7 +150,7 @@
                 "name": "multiDataset",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "TimeseriesData",
@@ -160,7 +160,7 @@
                 "name": "preview",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/.storybook/preview.ts",
+                "file": "projects/kommonitor-toolbox/.storybook/preview.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Preview",
@@ -170,7 +170,7 @@
                 "name": "Primary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -180,7 +180,7 @@
                 "name": "Secondary",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -190,7 +190,7 @@
                 "name": "singleDataset",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "TimeseriesData",
@@ -200,7 +200,7 @@
                 "name": "Small",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -214,7 +214,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "StoryObj<ButtonComponent>",
-                "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -225,7 +225,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "StoryObj<HeaderComponent>",
-                "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -236,7 +236,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "StoryObj<PageComponent>",
-                "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -247,7 +247,7 @@
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
                 "rawtype": "StoryObj<TimeseriesChartComponent>",
-                "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -256,12 +256,12 @@
         ],
         "enumerations": [],
         "groupedVariables": {
-            "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts": [
+            "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts": [
                 {
                     "name": "EinDataset",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -273,7 +273,7 @@
                     "name": "emptyData",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "TimeseriesData",
@@ -283,7 +283,7 @@
                     "name": "Leer",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -295,7 +295,7 @@
                     "name": "MehrereDatasets",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -307,7 +307,7 @@
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<TimeseriesChartComponent>",
@@ -317,7 +317,7 @@
                     "name": "multiDataset",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "TimeseriesData",
@@ -327,19 +327,19 @@
                     "name": "singleDataset",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "TimeseriesData",
                     "defaultValue": "{\n  labels: ['2020', '2021', '2022', '2023', '2024'],\n  datasets: [\n    {\n      label: 'Einwohner',\n      data: [1686, 17031, 17105, 17115, 17200],\n    },\n  ],\n}"
                 }
             ],
-            "projects/kommonitor-components/src/stories/button.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/button.stories.ts": [
                 {
                     "name": "Large",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -349,7 +349,7 @@
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<ButtonComponent>",
@@ -359,7 +359,7 @@
                     "name": "Primary",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -369,7 +369,7 @@
                     "name": "Secondary",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -379,19 +379,19 @@
                     "name": "Small",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
                     "defaultValue": "{\n  args: {\n    size: 'small',\n    label: 'Button',\n  },\n}"
                 }
             ],
-            "projects/kommonitor-components/src/stories/header.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/header.stories.ts": [
                 {
                     "name": "LoggedIn",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -401,7 +401,7 @@
                     "name": "LoggedOut",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -411,19 +411,19 @@
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<HeaderComponent>",
                     "defaultValue": "{\n  title: 'Example/Header',\n  component: HeaderComponent,\n  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs\n  tags: ['autodocs'],\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n  args: {\n    onLogin: fn(),\n    onLogout: fn(),\n    onCreateAccount: fn(),\n  },\n}"
                 }
             ],
-            "projects/kommonitor-components/src/stories/page.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/page.stories.ts": [
                 {
                     "name": "LoggedIn",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -433,7 +433,7 @@
                     "name": "LoggedOut",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story",
@@ -443,19 +443,19 @@
                     "name": "meta",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Meta<PageComponent>",
                     "defaultValue": "{\n  title: 'Example/Page',\n  component: PageComponent,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
                 }
             ],
-            "projects/kommonitor-components/.storybook/preview.ts": [
+            "projects/kommonitor-toolbox/.storybook/preview.ts": [
                 {
                     "name": "preview",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/kommonitor-components/.storybook/preview.ts",
+                    "file": "projects/kommonitor-toolbox/.storybook/preview.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Preview",
@@ -466,52 +466,52 @@
         "groupedFunctions": {},
         "groupedEnumerations": {},
         "groupedTypeAliases": {
-            "projects/kommonitor-components/src/stories/button.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/button.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "rawtype": "StoryObj<ButtonComponent>",
-                    "file": "projects/kommonitor-components/src/stories/button.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
                     "kind": 184
                 }
             ],
-            "projects/kommonitor-components/src/stories/header.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/header.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "rawtype": "StoryObj<HeaderComponent>",
-                    "file": "projects/kommonitor-components/src/stories/header.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
                     "kind": 184
                 }
             ],
-            "projects/kommonitor-components/src/stories/page.stories.ts": [
+            "projects/kommonitor-toolbox/src/stories/page.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "rawtype": "StoryObj<PageComponent>",
-                    "file": "projects/kommonitor-components/src/stories/page.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
                     "kind": 184
                 }
             ],
-            "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts": [
+            "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts": [
                 {
                     "name": "Story",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
                     "rawtype": "StoryObj<TimeseriesChartComponent>",
-                    "file": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                    "file": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -530,7 +530,7 @@
         "status": "low",
         "files": [
             {
-                "filePath": "projects/kommonitor-components/.storybook/preview.ts",
+                "filePath": "projects/kommonitor-toolbox/.storybook/preview.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -540,7 +540,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -550,7 +550,7 @@
                 "status": "very-good"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -560,7 +560,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -570,7 +570,7 @@
                 "status": "very-good"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -580,7 +580,7 @@
                 "status": "very-good"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -590,7 +590,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -600,7 +600,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -610,7 +610,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/lib/timeseries-chart/timeseries-chart.component.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
@@ -620,7 +620,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -630,7 +630,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -640,7 +640,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -650,7 +650,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -660,7 +660,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -670,7 +670,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/button.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/button.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
@@ -680,7 +680,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -690,7 +690,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -700,7 +700,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -710,7 +710,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/header.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/header.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
@@ -720,7 +720,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -730,7 +730,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -740,7 +740,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -750,7 +750,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/kommonitor-components/src/stories/page.stories.ts",
+                "filePath": "projects/kommonitor-toolbox/src/stories/page.stories.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",

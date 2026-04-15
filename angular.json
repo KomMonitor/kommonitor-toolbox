@@ -6,20 +6,20 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "kommonitor-components": {
+    "kommonitor-toolbox": {
       "projectType": "library",
-      "root": "projects/kommonitor-components",
-      "sourceRoot": "projects/kommonitor-components/src",
+      "root": "projects/kommonitor-toolbox",
+      "sourceRoot": "projects/kommonitor-toolbox/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular/build:ng-packagr",
           "configurations": {
             "production": {
-              "tsConfig": "projects/kommonitor-components/tsconfig.lib.prod.json"
+              "tsConfig": "projects/kommonitor-toolbox/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "projects/kommonitor-components/tsconfig.lib.json"
+              "tsConfig": "projects/kommonitor-toolbox/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -27,20 +27,20 @@
         "test": {
           "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "projects/kommonitor-components/tsconfig.spec.json"
+            "tsConfig": "projects/kommonitor-toolbox/tsconfig.spec.json"
           }
         },
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
-            "configDir": "projects/kommonitor-components/.storybook",
-            "browserTarget": "kommonitor-components:build",
+            "configDir": "projects/kommonitor-toolbox/.storybook",
+            "browserTarget": "kommonitor-toolbox:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
               "json",
               "-d",
-              "projects/kommonitor-components"
+              "projects/kommonitor-toolbox"
             ],
             "port": 6006
           }
@@ -48,14 +48,14 @@
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "configDir": "projects/kommonitor-components/.storybook",
-            "browserTarget": "kommonitor-components:build",
+            "configDir": "projects/kommonitor-toolbox/.storybook",
+            "browserTarget": "kommonitor-toolbox:build",
             "compodoc": true,
             "compodocArgs": [
               "-e",
               "json",
               "-d",
-              "projects/kommonitor-components"
+              "projects/kommonitor-toolbox"
             ],
             "outputDir": "storybook-static"
           }

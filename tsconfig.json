@@ -7,7 +7,7 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "paths": {
-      "kommonitor-components": ["./dist/kommonitor-components"]
+      "kommonitor-toolbox": ["./dist/kommonitor-toolbox"]
     },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -27,10 +27,10 @@
   "files": [],
   "references": [
     {
-      "path": "./projects/kommonitor-components/tsconfig.lib.json"
+      "path": "./projects/kommonitor-toolbox/tsconfig.lib.json"
     },
     {
-      "path": "./projects/kommonitor-components/tsconfig.spec.json"
+      "path": "./projects/kommonitor-toolbox/tsconfig.spec.json"
     }
   ]
 }
