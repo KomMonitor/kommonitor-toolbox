@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "schematicCollections": ["angular-eslint"]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -36,12 +37,7 @@
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
             "compodoc": true,
-            "compodocArgs": [
-              "-e",
-              "json",
-              "-d",
-              "projects/kommonitor-toolbox"
-            ],
+            "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
             "port": 6006
           }
         },
@@ -51,13 +47,18 @@
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
             "compodoc": true,
-            "compodocArgs": [
-              "-e",
-              "json",
-              "-d",
-              "projects/kommonitor-toolbox"
-            ],
+            "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
             "outputDir": "storybook-static"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/kommonitor-toolbox/**/*.ts",
+              "projects/kommonitor-toolbox/**/*.html"
+            ],
+            "eslintConfig": "projects/kommonitor-toolbox/eslint.config.js"
           }
         }
       }

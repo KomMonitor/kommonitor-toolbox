@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 
 import { HeaderComponent } from './header.component';
 import type { User } from './user';
 
 @Component({
-  selector: 'storybook-page',
+  selector: 'lib-storybook-page',
   standalone: true,
   imports: [CommonModule, HeaderComponent],
   template: `<article>
-  <storybook-header
+  <lib-storybook-header
     [user]="user"
     (onLogout)="doLogout()"
     (onLogin)="doLogin()"
     (onCreateAccount)="doCreateAccount()"
-  ></storybook-header>
+  ></lib-storybook-header>
   <section class="storybook-page">
     <h2>Pages in Storybook</h2>
     <p>

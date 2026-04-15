@@ -14,7 +14,7 @@ const meta: Meta<ButtonComponent> = {
     },
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#story-args
-  args: { onClick: fn() },
+  args: { clicked: fn() },
 };
 
 export default meta;
