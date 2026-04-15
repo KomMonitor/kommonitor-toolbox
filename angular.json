@@ -29,6 +29,36 @@
           "options": {
             "tsConfig": "projects/kommonitor-components/tsconfig.spec.json"
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "configDir": "projects/kommonitor-components/.storybook",
+            "browserTarget": "kommonitor-components:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/kommonitor-components"
+            ],
+            "port": 6006
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "configDir": "projects/kommonitor-components/.storybook",
+            "browserTarget": "kommonitor-components:build",
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/kommonitor-components"
+            ],
+            "outputDir": "storybook-static"
+          }
         }
       }
     }
