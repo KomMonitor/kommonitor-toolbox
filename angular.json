@@ -38,7 +38,8 @@
             "browserTarget": "kommonitor-toolbox:build",
             "compodoc": true,
             "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
-            "port": 6006
+            "port": 6006,
+            "open": false
           }
         },
         "build-storybook": {

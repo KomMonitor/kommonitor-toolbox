@@ -26,6 +26,12 @@ module.exports = defineConfig([
     },
   },
   {
+    files: ['**/*.stories.ts'],
+    rules: {
+      '@angular-eslint/component-selector': 'off',
+    },
+  },
+  {
     files: ['**/*.html'],
     rules: {},
   },
