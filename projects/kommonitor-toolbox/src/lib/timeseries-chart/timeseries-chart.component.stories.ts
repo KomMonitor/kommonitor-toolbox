@@ -3,6 +3,7 @@ import { componentWrapperDecorator, type Meta, type StoryObj } from '@storybook/
 
 import {
   TimeseriesChartComponent,
+  type LegendComponentOption,
   type TimeseriesData,
   type TimeseriesIntervalDataset,
   type TimeseriesLineDataset,
@@ -139,12 +140,17 @@ const meta: Meta<TimeseriesChartComponent> = {
       control: 'boolean',
       description: 'Y-Achse startet am Datumminimum statt bei 0.',
     },
+    legendConfig: {
+      control: 'object',
+      description: 'Vollständige ECharts-Legenden-Konfiguration (LegendComponentOption). Überschreibt die Komponentendefaults.',
+    },
   },
   args: {
     data: singleData,
     xAxisLabel: '',
     yAxisLabel: '',
     scaleToData: false,
+    legendConfig: { show: true, orient: 'horizontal', bottom: 0 },
   },
 };
 
@@ -321,6 +327,47 @@ export const IntervallStyling: StoryObj<IntervallStylingArgs> = {
       yAxisLabel: args.yAxisLabel,
     },
   }),
+};
+
+// ─── Legend Configuration Stories ────────────────────────────────────────────
+
+const LEGEND_ORIENT_OPTIONS = ['horizontal', 'vertical'] as const;
+const LEGEND_POSITION_OPTIONS = ['bottom', 'top', 'left', 'right'] as const;
+
+interface LegendKonfigArgs {
+  show: boolean;
+  orient: (typeof LEGEND_ORIENT_OPTIONS)[number];
+  position: (typeof LEGEND_POSITION_OPTIONS)[number];
+}
+
+/** Die Legende lässt sich vollständig per `legendConfig`-Input steuern. Hier können Sichtbarkeit, Ausrichtung und Position direkt über Controls konfiguriert werden. */
+export const LegendKonfiguration: StoryObj<LegendKonfigArgs> = {
+  name: 'Legende (konfigurierbar)',
+  argTypes: {
+    show:     { control: 'boolean', description: 'Legende anzeigen' },
+    orient:   { control: 'select', options: LEGEND_ORIENT_OPTIONS, description: 'Ausrichtung der Legende' },
+    position: { control: 'select', options: LEGEND_POSITION_OPTIONS, description: 'Position der Legende' },
+  },
+  args: {
+    show: true,
+    orient: 'horizontal',
+    position: 'bottom',
+  },
+  render: (args: LegendKonfigArgs) => {
+    const legendConfig: LegendComponentOption = {
+      show: args.show,
+      orient: args.orient,
+      ...(args.position === 'bottom' ? { bottom: 0, top: 'auto', left: 'auto', right: 'auto' } : {}),
+      ...(args.position === 'top'    ? { top: 0, bottom: 'auto', left: 'auto', right: 'auto' } : {}),
+      ...(args.position === 'left'   ? { left: 0, right: 'auto', top: 'center', bottom: 'auto' } : {}),
+      ...(args.position === 'right'  ? { right: 0, left: 'auto', top: 'center', bottom: 'auto' } : {}),
+    };
+    return {
+      props: { data: multiData, legendConfig },
+      template: `<lib-timeseries-chart [data]="data" [legendConfig]="legendConfig"></lib-timeseries-chart>`,
+      moduleMetadata: { imports: [TimeseriesChartComponent] },
+    };
+  },
 };
 
 /** Vergleich: linke Ansicht startet bei 0, rechte Ansicht skaliert auf den Datenbereich. Der Unterschied ist besonders sichtbar, wenn die Werte weit über 0 liegen. */

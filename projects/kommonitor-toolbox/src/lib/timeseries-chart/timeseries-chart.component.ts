@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import type { EChartsOption, SeriesOption } from 'echarts';
+import type { EChartsOption, LegendComponentOption, SeriesOption } from 'echarts';
 import * as echarts from 'echarts';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import type {
@@ -7,6 +7,8 @@ import type {
   TimeseriesData,
   TimeseriesIntervalDataset,
 } from './timeseries-chart.types';
+
+export type { LegendComponentOption } from 'echarts';
 
 export type {
   TimeseriesData,
@@ -18,6 +20,12 @@ export type {
 const BAND_OPACITY = 0.35;
 const X_AXIS_NAME_GAP = 30;
 const Y_AXIS_NAME_GAP = 50;
+
+const DEFAULT_LEGEND_CONFIG: LegendComponentOption = {
+  show: true,
+  orient: 'horizontal',
+  bottom: 0,
+};
 
 @Component({
   selector: 'lib-timeseries-chart',
@@ -36,6 +44,7 @@ export class TimeseriesChartComponent implements OnChanges {
   @Input() xAxisLabel = '';
   @Input() yAxisLabel = '';
   @Input() scaleToData = false;
+  @Input() legendConfig: LegendComponentOption = DEFAULT_LEGEND_CONFIG;
 
   chartOptions: EChartsOption = {};
 
@@ -58,7 +67,7 @@ export class TimeseriesChartComponent implements OnChanges {
 
     this.chartOptions = {
       tooltip: { trigger: 'axis', formatter: this.buildTooltipFormatter() },
-      legend: { data: legendData },
+      legend: { ...this.legendConfig, data: legendData },
       xAxis: this.buildXAxis(),
       yAxis: this.buildYAxis(),
       series,
