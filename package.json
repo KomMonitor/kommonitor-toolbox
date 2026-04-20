@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "publish:local": "ng build && yalc publish dist/kommonitor-toolbox",
+    "push:local": "ng build && yalc push dist/kommonitor-toolbox",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "storybook": "ng run kommonitor-toolbox:storybook",
