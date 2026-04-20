@@ -203,7 +203,7 @@ export const Test: Story = {
           label: 'Anteil',
           data: [5.02, 5.2, 5.38, 6.09, 7.15, 7.3, 8.96, 10.1, 10.2],
           showMeanLine: true,
-          color: ['red', 'green']
+          color: ['red', 'green'],
         },
       ],
     },

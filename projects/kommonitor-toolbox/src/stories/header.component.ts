@@ -33,7 +33,8 @@ import type { User } from './user';
         @if (user) {
           <div>
             <span class="welcome">
-              Welcome, <b>{{ user.name }}</b>!
+              Welcome, <b>{{ user.name }}</b
+              >!
             </span>
             <lib-storybook-button
               size="small"

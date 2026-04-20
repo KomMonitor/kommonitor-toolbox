@@ -14,7 +14,7 @@ export type {
   TimeseriesData,
   TimeseriesDataset,
   TimeseriesIntervalDataset,
-  TimeseriesLineDataset
+  TimeseriesLineDataset,
 } from './timeseries-chart.types';
 
 const BAND_OPACITY = 0.35;
