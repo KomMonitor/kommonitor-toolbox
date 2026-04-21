@@ -36,6 +36,7 @@
           "options": {
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
+            "styles": ["node_modules/ol/ol.css"],
             "compodoc": true,
             "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
             "port": 6006,
@@ -47,6 +48,7 @@
           "options": {
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
+            "styles": ["node_modules/ol/ol.css"],
             "compodoc": true,
             "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
             "outputDir": "storybook-static"

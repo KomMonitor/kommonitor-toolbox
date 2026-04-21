@@ -26,6 +26,7 @@
     "@angular/router": "^21.2.0",
     "echarts": "^6.0.0",
     "ngx-echarts": "^21.0.0",
+    "ol": "^10.9.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
