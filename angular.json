@@ -3,7 +3,9 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "schematicCollections": ["angular-eslint"]
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -21,6 +23,9 @@
             },
             "development": {
               "tsConfig": "projects/kommonitor-toolbox/tsconfig.lib.json"
+            },
+            "local": {
+              "tsConfig": "projects/kommonitor-toolbox/tsconfig.lib.local.json"
             }
           },
           "defaultConfiguration": "production"
@@ -36,9 +41,16 @@
           "options": {
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
-            "styles": ["node_modules/ol/ol.css"],
+            "styles": [
+              "node_modules/ol/ol.css"
+            ],
             "compodoc": true,
-            "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/kommonitor-toolbox"
+            ],
             "port": 6006,
             "open": false
           }
@@ -48,9 +60,16 @@
           "options": {
             "configDir": "projects/kommonitor-toolbox/.storybook",
             "browserTarget": "kommonitor-toolbox:build",
-            "styles": ["node_modules/ol/ol.css"],
+            "styles": [
+              "node_modules/ol/ol.css"
+            ],
             "compodoc": true,
-            "compodocArgs": ["-e", "json", "-d", "projects/kommonitor-toolbox"],
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/kommonitor-toolbox"
+            ],
             "outputDir": "storybook-static"
           }
         },
