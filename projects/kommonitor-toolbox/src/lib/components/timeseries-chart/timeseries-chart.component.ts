@@ -1,5 +1,10 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import type { EChartsOption, LegendComponentOption, SeriesOption } from 'echarts';
+import type {
+  EChartsOption,
+  GridComponentOption,
+  LegendComponentOption,
+  SeriesOption,
+} from 'echarts';
 import * as echarts from 'echarts';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import type {
@@ -8,7 +13,7 @@ import type {
   TimeseriesIntervalDataset,
 } from './timeseries-chart.types';
 
-export type { LegendComponentOption } from 'echarts';
+export type { GridComponentOption, LegendComponentOption } from 'echarts';
 
 export type {
   TimeseriesData,
@@ -18,8 +23,13 @@ export type {
 } from './timeseries-chart.types';
 
 const BAND_OPACITY = 0.35;
-const X_AXIS_NAME_GAP = 30;
-const Y_AXIS_NAME_GAP = 50;
+const X_AXIS_NAME_GAP = 24;
+const Y_AXIS_NAME_GAP = 40;
+
+const GRID_PADDING = 20;
+const GRID_RIGHT_PADDING = 32;
+const GRID_PADDING_LEGEND = 32;
+const GRID_PADDING_AXIS_LABEL = 32;
 
 const DEFAULT_LEGEND_CONFIG: LegendComponentOption = {
   show: true,
@@ -45,6 +55,7 @@ export class TimeseriesChartComponent implements OnChanges {
   @Input() yAxisLabel = '';
   @Input() scaleToData = false;
   @Input() legendConfig: LegendComponentOption = DEFAULT_LEGEND_CONFIG;
+  @Input() gridConfig: GridComponentOption = {};
 
   chartOptions: EChartsOption = {};
 
@@ -66,6 +77,7 @@ export class TimeseriesChartComponent implements OnChanges {
     }
 
     this.chartOptions = {
+      grid: this.buildGrid(),
       tooltip: { trigger: 'axis', formatter: this.buildTooltipFormatter() },
       legend: { ...this.legendConfig, data: legendData },
       xAxis: this.buildXAxis(),
@@ -129,6 +141,20 @@ export class TimeseriesChartComponent implements OnChanges {
         .filter((p) => !p.seriesName.includes('__'))
         .map((p) => `${p.marker} ${p.seriesName}: ${p.data}`)
         .join('<br/>');
+    };
+  }
+
+  private buildGrid(): EChartsOption['grid'] {
+    const hasLegend = this.legendConfig.show !== false;
+    return {
+      containLabel: true,
+      left: this.yAxisLabel ? GRID_PADDING_AXIS_LABEL : GRID_PADDING,
+      right: GRID_RIGHT_PADDING,
+      top: GRID_PADDING,
+      bottom:
+        (hasLegend ? GRID_PADDING_LEGEND : GRID_PADDING) +
+        (this.xAxisLabel ? GRID_PADDING_AXIS_LABEL : 0),
+      ...this.gridConfig,
     };
   }
 

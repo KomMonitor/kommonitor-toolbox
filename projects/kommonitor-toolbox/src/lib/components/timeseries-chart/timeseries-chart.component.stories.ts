@@ -3,6 +3,7 @@ import { componentWrapperDecorator, type Meta, type StoryObj } from '@storybook/
 
 import {
   TimeseriesChartComponent,
+  type GridComponentOption,
   type LegendComponentOption,
   type TimeseriesData,
   type TimeseriesIntervalDataset,
@@ -189,6 +190,11 @@ const meta: Meta<TimeseriesChartComponent> = {
       description:
         'Vollständige ECharts-Legenden-Konfiguration (LegendComponentOption). Überschreibt die Komponentendefaults.',
     },
+    gridConfig: {
+      control: 'object',
+      description:
+        'ECharts-Grid-Konfiguration (GridComponentOption) zum Überschreiben der automatisch berechneten Ränder. Nur gesetzte Felder werden überschrieben.',
+    },
   },
   args: {
     data: singleData,
@@ -196,6 +202,7 @@ const meta: Meta<TimeseriesChartComponent> = {
     yAxisLabel: '',
     scaleToData: false,
     legendConfig: { show: true, orient: 'horizontal', bottom: 0 },
+    gridConfig: {},
   },
 };
 
@@ -431,6 +438,45 @@ export const LegendKonfiguration: StoryObj<LegendKonfigArgs> = {
     return {
       props: { data: multiData, legendConfig },
       template: `<lib-timeseries-chart [data]="data" [legendConfig]="legendConfig"></lib-timeseries-chart>`,
+      moduleMetadata: { imports: [TimeseriesChartComponent] },
+    };
+  },
+};
+
+// ─── Grid Configuration Stories ──────────────────────────────────────────────
+
+interface GridKonfigArgs {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+/** Die Ränder (Grid) lassen sich per `gridConfig`-Input überschreiben. Standardmäßig werden sie automatisch anhand von Achsenbeschriftungen und Legende berechnet – hier können die einzelnen Abstände direkt über Controls gesetzt werden. */
+export const GridKonfiguration: StoryObj<GridKonfigArgs> = {
+  name: 'Ränder (konfigurierbar)',
+  argTypes: {
+    left: { control: { type: 'range', min: 0, max: 120 }, description: 'Abstand links (px)' },
+    right: { control: { type: 'range', min: 0, max: 120 }, description: 'Abstand rechts (px)' },
+    top: { control: { type: 'range', min: 0, max: 120 }, description: 'Abstand oben (px)' },
+    bottom: { control: { type: 'range', min: 0, max: 120 }, description: 'Abstand unten (px)' },
+  },
+  args: {
+    left: 12,
+    right: 12,
+    top: 12,
+    bottom: 32,
+  },
+  render: (args: GridKonfigArgs) => {
+    const gridConfig: GridComponentOption = {
+      left: args.left,
+      right: args.right,
+      top: args.top,
+      bottom: args.bottom,
+    };
+    return {
+      props: { data: multiData, gridConfig },
+      template: `<lib-timeseries-chart [data]="data" [gridConfig]="gridConfig"></lib-timeseries-chart>`,
       moduleMetadata: { imports: [TimeseriesChartComponent] },
     };
   },
