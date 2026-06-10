@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.status {
+  padding: 1rem;
+  color: #555;
+}
+
+.status--error {
+  color: #b00020;
+}

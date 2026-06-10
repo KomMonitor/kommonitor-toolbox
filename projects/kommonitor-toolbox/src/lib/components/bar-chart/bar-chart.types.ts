@@ -9,11 +9,25 @@ export interface BarChartDataset {
   showMeanLine?: boolean;
 }
 
+/** Position of the reference line's label relative to the line. */
+export type BarChartReferenceLabelPosition =
+  | 'start'
+  | 'middle'
+  | 'end'
+  | 'insideStartTop'
+  | 'insideStartBottom'
+  | 'insideMiddleTop'
+  | 'insideMiddleBottom'
+  | 'insideEndTop'
+  | 'insideEndBottom';
+
 export interface BarChartReferenceValue {
   /** The numeric threshold or target value */
   value: number;
   /** Optional label shown next to the reference line */
   label?: string;
+  /** Where the label sits along the reference line (default: ECharts default, 'end') */
+  labelPosition?: BarChartReferenceLabelPosition;
 }
 
 export interface BarChartData {

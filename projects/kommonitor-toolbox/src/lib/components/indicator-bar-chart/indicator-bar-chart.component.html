@@ -1,0 +1,21 @@
+@if (error()) {
+  <p class="status status--error">{{ error() }}</p>
+} @else if (loading()) {
+  <p class="status">Daten werden geladen …</p>
+} @else {
+  <lib-bar-chart
+    [data]="data()"
+    [referenceValue]="showMeanLine() ? referenceValue() : undefined"
+    [yAxisLabel]="unit()"
+    [showLegend]="false"
+    [showCategoryLabels]="false"
+    [showValueLabels]="showBarLabels()"
+    valueLabelPosition="insideBottom"
+    [valueLabelRotate]="90"
+    valueLabelAlign="left"
+    valueLabelVerticalAlign="middle"
+    [valueLabelDistance]="8"
+    [valueLabelFormatter]="labelFormatter"
+    [showToolbox]="true"
+  ></lib-bar-chart>
+}
