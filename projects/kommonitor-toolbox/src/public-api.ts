@@ -2,6 +2,7 @@
  * Public API Surface of kommonitor-toolbox
  */
 
+export * from './lib/classification';
 export * from './lib/components/bar-chart/bar-chart.component';
 export * from './lib/components/bar-chart/bar-chart.types';
 export * from './lib/components/indicator-bar-chart/indicator-bar-chart.component';
