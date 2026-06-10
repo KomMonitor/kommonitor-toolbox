@@ -2,16 +2,17 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { EMPTY, combineLatest, forkJoin } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  classify,
+  type ClassificationConfig,
+  DEFAULT_CLASSIFICATION,
+  discreteLegend,
+  type LegendClass,
+} from '../../classification';
 import { IndicatorService } from '../../services/indicators/indicator';
 import { MapComponent } from '../map/map.component';
 import type { MapCenter, MapLayer } from '../map/map.types';
-import {
-  colorForValue,
-  extentOf,
-  formatDe,
-  legendGradientCss,
-  valueAt,
-} from './indicator-map.types';
+import { allValuesOf, legendLabel, valueAt } from './indicator-map.types';
 
 const DEFAULT_CENTER: MapCenter = { lon: 10.4515, lat: 51.1657 };
 const DEFAULT_ZOOM = 6;
@@ -41,6 +42,8 @@ export class IndicatorMapComponent {
   readonly zoom = input<number>();
   /** Show or hide the colour legend below the map */
   readonly showLegend = input(true);
+  /** Coloring configuration: palette, classification method and number of classes. */
+  readonly classification = input<ClassificationConfig>(DEFAULT_CLASSIFICATION);
 
   private readonly indicatorService = inject(IndicatorService);
 
@@ -53,22 +56,21 @@ export class IndicatorMapComponent {
 
   readonly layers = signal<MapLayer[]>([{ type: 'osm' }]);
   readonly unit = signal('');
-  readonly min = signal(0);
-  readonly max = signal(0);
   readonly loading = signal(false);
   readonly error = signal('');
   /** Whether any feature carried a numeric value (controls legend visibility). */
   readonly hasData = signal(false);
-  /** CSS gradient used to render the legend colour bar. */
-  readonly legendGradient = legendGradientCss();
-  /** Formats a numeric value using German locale, for the legend labels. */
-  readonly formatValue = formatDe;
+  /** Discrete legend entries (colour + value range) for the active classification. */
+  readonly legendClasses = signal<LegendClass[]>([]);
+  /** Formats a legend class as a German value-range label. */
+  readonly legendLabel = legendLabel;
 
   constructor() {
     combineLatest({
       indicatorId: toObservable(this.indicatorId),
       spatialUnitId: toObservable(this.spatialUnitId),
       timestamp: toObservable(this.timestamp),
+      config: toObservable(this.classification),
     })
       .pipe(
         filter(({ indicatorId, spatialUnitId, timestamp }) =>
@@ -78,7 +80,7 @@ export class IndicatorMapComponent {
           this.loading.set(true);
           this.error.set('');
         }),
-        switchMap(({ indicatorId, spatialUnitId, timestamp }) =>
+        switchMap(({ indicatorId, spatialUnitId, timestamp, config }) =>
           forkJoin({
             featureCollection: this.indicatorService.getIndicatorFeatureCollection(
               indicatorId,
@@ -86,7 +88,7 @@ export class IndicatorMapComponent {
             ),
             indicators: this.indicatorService.getIndicators(),
           }).pipe(
-            map((result) => ({ ...result, indicatorId, timestamp })),
+            map((result) => ({ ...result, indicatorId, timestamp, config })),
             catchError(() => {
               this.error.set('Die Indikatordaten konnten nicht geladen werden.');
               this.loading.set(false);
@@ -96,19 +98,25 @@ export class IndicatorMapComponent {
         ),
         takeUntilDestroyed(),
       )
-      .subscribe(({ featureCollection, indicators, indicatorId, timestamp }) => {
+      .subscribe(({ featureCollection, indicators, indicatorId, timestamp, config }) => {
         const indicator = indicators.find((i) => i.indicatorId === indicatorId);
         this.unit.set(indicator?.unit ?? indicator?.metadata?.unit ?? '');
 
         const features = featureCollection?.features ?? [];
-        const values = features
-          .map((feature) => valueAt(feature.properties, timestamp))
-          .filter((value): value is number => value !== null);
+        // Classify across the whole timeseries when requested, else only the selected date.
+        const classificationValues = config.classifyAcrossTimeseries
+          ? features.flatMap((feature) => allValuesOf(feature.properties))
+          : features
+              .map((feature) => valueAt(feature.properties, timestamp))
+              .filter((value): value is number => value !== null);
 
-        const { min, max } = extentOf(values);
-        this.min.set(min);
-        this.max.set(max);
-        this.hasData.set(values.length > 0);
+        const hasValueAtTimestamp = features.some(
+          (feature) => valueAt(feature.properties, timestamp) !== null,
+        );
+        this.hasData.set(hasValueAtTimestamp);
+
+        const classification = classify(classificationValues, config);
+        this.legendClasses.set(discreteLegend(classification.breaks, classification.colors));
 
         this.layers.set([
           { type: 'osm' },
@@ -116,14 +124,11 @@ export class IndicatorMapComponent {
             type: 'geojson',
             data: featureCollection,
             opacity: 0.8,
-            style: (props) => {
-              const value = valueAt(props, timestamp);
-              return {
-                fillColor: value === null ? 'rgba(0, 0, 0, 0.05)' : colorForValue(value, min, max),
-                strokeColor: '#ffffff',
-                strokeWidth: 1,
-              };
-            },
+            style: (props) => ({
+              fillColor: classification.colorFor(valueAt(props, timestamp)),
+              strokeColor: '#ffffff',
+              strokeWidth: 1,
+            }),
           },
         ]);
 

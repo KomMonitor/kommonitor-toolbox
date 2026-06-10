@@ -1,4 +1,5 @@
-import { GRADIENT_STOPS } from '../indicator-bar-chart/indicator-bar-chart.types';
+import type { LegendClass } from '../../classification';
+import { formatDe } from '../indicator-bar-chart/indicator-bar-chart.types';
 
 export { formatDe } from '../indicator-bar-chart/indicator-bar-chart.types';
 
@@ -21,6 +22,21 @@ export function valueAt(properties: Record<string, unknown>, timestamp: string):
   return isNaN(parsed) ? null : parsed;
 }
 
+/**
+ * Read every timestamped (`DATE_*`) value from a feature's properties as a list of
+ * finite numbers. Used to classify across the whole timeseries instead of a single date.
+ */
+export function allValuesOf(properties: Record<string, unknown>): number[] {
+  return Object.keys(properties)
+    .filter((key) => key.startsWith(DATE_PREFIX))
+    .map((key) => {
+      const raw = properties[key];
+      const parsed = typeof raw === 'number' ? raw : parseFloat(String(raw));
+      return parsed;
+    })
+    .filter((value) => Number.isFinite(value));
+}
+
 /** Human-readable name of a feature, falling back to its id. */
 export function featureName(properties: Record<string, unknown>): string {
   const name = properties['NAME'];
@@ -40,35 +56,15 @@ export function extentOf(values: number[]): ValueExtent {
 }
 
 /**
- * Map a value to a colour by linearly interpolating across {@link GRADIENT_STOPS}
- * (green → teal → blue → purple) between `min` and `max`. Produces the choropleth
- * fill colour for a feature.
+ * Human-readable value range of a legend class: `"< upper"` for the open-ended first
+ * class, `"≥ lower"` for the open-ended last class, otherwise `"lower – upper"`.
  */
-export function colorForValue(value: number, min: number, max: number): string {
-  const t = max > min ? (value - min) / (max - min) : 0;
-  const segments = GRADIENT_STOPS.length - 1;
-  const scaled = Math.max(0, Math.min(1, t)) * segments;
-  const segment = Math.min(Math.floor(scaled), segments - 1);
-  const localT = scaled - segment;
-  const from = GRADIENT_STOPS[segment];
-  const to = GRADIENT_STOPS[segment + 1];
-  return rgb([
-    lerp(from[0], to[0], localT),
-    lerp(from[1], to[1], localT),
-    lerp(from[2], to[2], localT),
-  ]);
-}
-
-/** CSS `linear-gradient(...)` value spanning all {@link GRADIENT_STOPS}, for the legend bar. */
-export function legendGradientCss(): string {
-  const stops = GRADIENT_STOPS.map((stop) => rgb(stop)).join(', ');
-  return `linear-gradient(to right, ${stops})`;
-}
-
-function lerp(from: number, to: number, t: number): number {
-  return Math.round(from + (to - from) * t);
-}
-
-function rgb([r, g, b]: readonly [number, number, number]): string {
-  return `rgb(${r}, ${g}, ${b})`;
+export function legendLabel(entry: LegendClass): string {
+  if (entry.lower === null) {
+    return `< ${formatDe(entry.upper ?? 0)}`;
+  }
+  if (entry.upper === null) {
+    return `≥ ${formatDe(entry.lower)}`;
+  }
+  return `${formatDe(entry.lower)} – ${formatDe(entry.upper)}`;
 }

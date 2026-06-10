@@ -16,9 +16,12 @@
 
   @if (showLegend() && hasData()) {
     <div class="legend">
-      <span class="legend__value">{{ formatValue(min()) }}</span>
-      <span class="legend__bar" [style.background]="legendGradient"></span>
-      <span class="legend__value">{{ formatValue(max()) }}</span>
+      @for (cls of legendClasses(); track $index) {
+        <span class="legend__item">
+          <span class="legend__swatch" [style.background]="cls.color"></span>
+          <span class="legend__label">{{ legendLabel(cls) }}</span>
+        </span>
+      }
       @if (unit()) {
         <span class="legend__unit">{{ unit() }}</span>
       }

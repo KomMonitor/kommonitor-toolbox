@@ -118,6 +118,13 @@ const meta: Meta<IndicatorMapComponent> = {
       control: 'boolean',
       description: 'Farb-Legende mit Wertebereich und Einheit unterhalb der Karte anzeigen.',
     },
+    classification: {
+      control: 'object',
+      description:
+        'Einfärbung: Farbpalette (paletteId), Klassifizierungsmethode (method), Klassenzahl ' +
+        '(numberOfClasses) und ob über die gesamte Zeitreihe klassifiziert wird ' +
+        '(classifyAcrossTimeseries).',
+    },
   },
   args: {
     indicatorId: INDICATOR_ID,
@@ -155,5 +162,21 @@ export const ManuellerAusschnitt: Story = {
   args: {
     center: { lon: 10.4515, lat: 51.1657 },
     zoom: 6,
+  },
+};
+
+/**
+ * Alternative Klassifizierung: Gelb–Orange–Rot-Palette mit Quantil-Methode und 4 Klassen.
+ * Zeigt, wie sich Einfärbung und Legende über den classification-Input steuern lassen.
+ */
+export const AndereKlassifizierung: Story = {
+  name: 'Andere Klassifizierung',
+  args: {
+    classification: {
+      paletteId: 'Blues',
+      method: 'quantile',
+      numberOfClasses: 4,
+      classifyAcrossTimeseries: true,
+    },
   },
 };
