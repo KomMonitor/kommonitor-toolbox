@@ -34,7 +34,7 @@ export interface IndicatorFeatureTimeseries {
 }
 
 /** Raw, untyped indicator feature as returned by the data-management API. */
-interface RawIndicatorFeature {
+export interface RawIndicatorFeature {
   ID?: string;
   fid?: string;
   NAME?: string;
@@ -42,6 +42,19 @@ interface RawIndicatorFeature {
   validEndDate?: string | null;
   arisenFrom?: string | null;
   [key: string]: unknown;
+}
+
+/** A single GeoJSON feature carrying geometry plus the raw indicator properties. */
+export interface GeoJsonIndicatorFeature {
+  type: 'Feature';
+  geometry: unknown;
+  properties: RawIndicatorFeature;
+}
+
+/** GeoJSON FeatureCollection as returned by the with-geometry indicator endpoint. */
+export interface IndicatorFeatureCollection {
+  type: 'FeatureCollection';
+  features: GeoJsonIndicatorFeature[];
 }
 
 @Injectable({
@@ -87,6 +100,20 @@ export class IndicatorService {
           .pipe(
             map((features) => (features ?? []).map((feature) => this.toFeatureTimeseries(feature))),
           ),
+      { ttlMs: this.config.timeseriesTtlMs ?? IndicatorService.DEFAULT_TTL_MS },
+    );
+  }
+
+  getIndicatorFeatureCollection(
+    indicatorId: string,
+    spatialUnitId: string,
+  ): Observable<IndicatorFeatureCollection> {
+    const url =
+      `${this.url}${IndicatorService.INDICATORS_PATH}` + `/${indicatorId}/${spatialUnitId}`;
+
+    return this.cache.get(
+      `geojson:${indicatorId}:${spatialUnitId}`,
+      () => this.http.get<IndicatorFeatureCollection>(url, { headers: this.authHeaders() }),
       { ttlMs: this.config.timeseriesTtlMs ?? IndicatorService.DEFAULT_TTL_MS },
     );
   }

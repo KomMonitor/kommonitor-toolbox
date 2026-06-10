@@ -1,0 +1,27 @@
+@if (error()) {
+  <p class="status status--error">{{ error() }}</p>
+} @else {
+  <div class="map-wrapper">
+    @if (loading()) {
+      <p class="status">Daten werden geladen …</p>
+    }
+    <lib-map
+      class="map"
+      [center]="effectiveCenter()"
+      [zoom]="effectiveZoom()"
+      [fitToData]="autoFit()"
+      [layers]="layers()"
+    ></lib-map>
+  </div>
+
+  @if (showLegend() && hasData()) {
+    <div class="legend">
+      <span class="legend__value">{{ formatValue(min()) }}</span>
+      <span class="legend__bar" [style.background]="legendGradient"></span>
+      <span class="legend__value">{{ formatValue(max()) }}</span>
+      @if (unit()) {
+        <span class="legend__unit">{{ unit() }}</span>
+      }
+    </div>
+  }
+}

@@ -8,6 +8,8 @@ import {
   input,
   viewChild,
 } from '@angular/core';
+import { createEmpty, extend, isEmpty, type Extent } from 'ol/extent';
+import type { FeatureLike } from 'ol/Feature';
 import GeoJSON from 'ol/format/GeoJSON';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
@@ -21,7 +23,13 @@ import Fill from 'ol/style/Fill';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import View from 'ol/View';
-import type { MapCenter, MapGeoJsonLayer, MapLayer, MapWmsLayer } from './map.types';
+import type {
+  MapCenter,
+  MapGeoJsonLayer,
+  MapLayer,
+  MapVectorStyle,
+  MapWmsLayer,
+} from './map.types';
 
 export type {
   MapCenter,
@@ -30,6 +38,7 @@ export type {
   MapOsmLayer,
   MapTileLayer,
   MapVectorStyle,
+  MapVectorStyleFn,
   MapWmsLayer,
 } from './map.types';
 
@@ -76,6 +85,14 @@ export class MapComponent {
   readonly layers = input<MapLayer[]>([]);
   /** Output projection used by the map view (default: EPSG:3857 Web Mercator) */
   readonly projection = input('EPSG:3857');
+  /**
+   * When true, the view fits the combined extent of all vector (GeoJSON) layers
+   * after they are (re)built, instead of using {@link center} / {@link zoom}.
+   * Falls back to center/zoom when there is no vector content.
+   */
+  readonly fitToData = input(false);
+  /** Padding in pixels applied around the data extent when {@link fitToData} is active. */
+  readonly fitPadding = input(24);
 
   private readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
 
@@ -84,6 +101,7 @@ export class MapComponent {
   constructor() {
     // Create the OpenLayers map once the view (and its container element) exists.
     afterNextRender(() => {
+      const olLayers = this.buildOlLayers();
       this.map = new Map({
         target: this.mapContainer().nativeElement,
         view: new View({
@@ -91,31 +109,66 @@ export class MapComponent {
           zoom: this.zoom(),
           projection: this.projection(),
         }),
-        layers: this.buildOlLayers(),
+        layers: olLayers,
       });
+      this.syncView(olLayers);
     });
 
     // Keep the map in sync with the inputs. Runs whenever an input signal changes;
     // the initial run is a no-op until afterNextRender has created the map.
     effect(() => {
-      const center = this.center();
-      const zoom = this.zoom();
-      // buildOlLayers() reads the layers and projection signals, so calling it here
-      // also registers those inputs as dependencies of this effect.
+      // Read all view-affecting signals so they are registered as dependencies.
+      this.center();
+      this.zoom();
+      this.fitToData();
+      this.fitPadding();
+      // buildOlLayers() reads the layers and projection signals.
       const olLayers = this.buildOlLayers();
       if (!this.map) return;
-
-      const view = this.map.getView();
-      view.setCenter(fromLonLat([center.lon, center.lat]));
-      view.setZoom(zoom);
 
       this.map.getLayers().clear();
       for (const layer of olLayers) {
         this.map.addLayer(layer);
       }
+      this.syncView(olLayers);
     });
 
     inject(DestroyRef).onDestroy(() => this.map?.setTarget(undefined));
+  }
+
+  /**
+   * Fits the view to the data extent when {@link fitToData} is active and there is
+   * vector content; otherwise applies the {@link center} / {@link zoom} inputs.
+   */
+  private syncView(olLayers: ReturnType<MapComponent['buildOlLayers']>) {
+    if (!this.map) return;
+    const view = this.map.getView();
+
+    if (this.fitToData()) {
+      const extent = this.dataExtent(olLayers);
+      if (extent) {
+        const padding = this.fitPadding();
+        view.fit(extent, { padding: [padding, padding, padding, padding], maxZoom: 16 });
+        return;
+      }
+    }
+
+    view.setCenter(fromLonLat([this.center().lon, this.center().lat]));
+    view.setZoom(this.zoom());
+  }
+
+  /** Combined extent of all vector layers' sources, or undefined when there is none. */
+  private dataExtent(olLayers: ReturnType<MapComponent['buildOlLayers']>): Extent | undefined {
+    const extent = createEmpty();
+    for (const layer of olLayers) {
+      if (layer instanceof VectorLayer) {
+        const sourceExtent = layer.getSource()?.getExtent();
+        if (sourceExtent) {
+          extend(extent, sourceExtent);
+        }
+      }
+    }
+    return isEmpty(extent) ? undefined : extent;
   }
 
   private buildOlLayers() {
@@ -164,20 +217,28 @@ export class MapComponent {
       featureProjection: this.projection(),
     });
 
-    const style = cfg.style
-      ? new Style({
-          fill: new Fill({ color: cfg.style.fillColor ?? 'rgba(0, 100, 255, 0.15)' }),
-          stroke: new Stroke({
-            color: cfg.style.strokeColor ?? '#0064ff',
-            width: cfg.style.strokeWidth ?? 1.5,
-          }),
-        })
-      : undefined;
+    const cfgStyle = cfg.style;
+    const style =
+      typeof cfgStyle === 'function'
+        ? (feature: FeatureLike) => this.toOlStyle(cfgStyle(feature.getProperties()))
+        : cfgStyle
+          ? this.toOlStyle(cfgStyle)
+          : undefined;
 
     return new VectorLayer({
       opacity: cfg.opacity ?? 1,
       source: new VectorSource({ features }),
       style,
+    });
+  }
+
+  private toOlStyle(style: MapVectorStyle): Style {
+    return new Style({
+      fill: new Fill({ color: style.fillColor ?? 'rgba(0, 100, 255, 0.15)' }),
+      stroke: new Stroke({
+        color: style.strokeColor ?? '#0064ff',
+        width: style.strokeWidth ?? 1.5,
+      }),
     });
   }
 }

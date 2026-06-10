@@ -45,13 +45,22 @@ export interface MapVectorStyle {
   strokeWidth?: number;
 }
 
+/**
+ * Resolves a {@link MapVectorStyle} per feature based on its GeoJSON properties.
+ * Enables data-driven styling such as choropleth colouring.
+ */
+export type MapVectorStyleFn = (properties: Record<string, unknown>) => MapVectorStyle;
+
 export interface MapGeoJsonLayer {
   /** Vector layer sourced from an inline GeoJSON FeatureCollection */
   type: 'geojson';
   /** GeoJSON FeatureCollection object */
   data: object;
-  /** Optional styling for features */
-  style?: MapVectorStyle;
+  /**
+   * Optional styling for features. Either a single style applied to all
+   * features, or a function resolving a style per feature from its properties.
+   */
+  style?: MapVectorStyle | MapVectorStyleFn;
   /** Layer opacity between 0 and 1, default: 1 */
   opacity?: number;
 }

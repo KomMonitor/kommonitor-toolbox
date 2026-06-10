@@ -7,8 +7,11 @@ export {
 } from './indicator.config';
 export {
   IndicatorService,
+  type GeoJsonIndicatorFeature,
   type Indicator,
+  type IndicatorFeatureCollection,
   type IndicatorFeatureTimeseries,
   type IndicatorMetadata,
   type IndicatorTimeseriesValue,
+  type RawIndicatorFeature,
 } from './indicators/indicator';
