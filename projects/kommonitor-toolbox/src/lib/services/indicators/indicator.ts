@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BEARER_TOKEN_PROVIDER } from '../bearer.token-provider';
+import { RequestCacheService } from '../cache/request-cache.service';
 import { KOMMONITOR_SERVICE_CONFIG } from '../indicator.config';
 
 export interface IndicatorMetadata {
@@ -51,15 +52,23 @@ export class IndicatorService {
   private static readonly INDICATORS_PATH = '/management/indicators';
   private static readonly CONTENT_TYPE_JSON = 'application/json';
   private static readonly BEARER_PREFIX = 'Bearer ';
+  private static readonly DEFAULT_TTL_MS = 5 * 60_000;
 
   private readonly http = inject(HttpClient);
   private readonly tokenProvider = inject(BEARER_TOKEN_PROVIDER);
-  private readonly url = inject(KOMMONITOR_SERVICE_CONFIG).dataAccessApiBaseUrl;
+  private readonly cache = inject(RequestCacheService);
+  private readonly config = inject(KOMMONITOR_SERVICE_CONFIG);
+  private readonly url = this.config.dataAccessApiBaseUrl;
 
   getIndicators(): Observable<Indicator[]> {
-    return this.http.get<Indicator[]>(`${this.url}${IndicatorService.INDICATORS_PATH}`, {
-      headers: this.authHeaders(),
-    });
+    return this.cache.get(
+      'indicators',
+      () =>
+        this.http.get<Indicator[]>(`${this.url}${IndicatorService.INDICATORS_PATH}`, {
+          headers: this.authHeaders(),
+        }),
+      { ttlMs: this.config.indicatorsTtlMs ?? IndicatorService.DEFAULT_TTL_MS },
+    );
   }
 
   getIndicatorTimeseries(
@@ -70,11 +79,16 @@ export class IndicatorService {
       `${this.url}${IndicatorService.INDICATORS_PATH}` +
       `/${indicatorId}/${spatialUnitId}/without-geometry`;
 
-    return this.http
-      .get<RawIndicatorFeature[]>(url, { headers: this.authHeaders() })
-      .pipe(
-        map((features) => (features ?? []).map((feature) => this.toFeatureTimeseries(feature))),
-      );
+    return this.cache.get(
+      `timeseries:${indicatorId}:${spatialUnitId}`,
+      () =>
+        this.http
+          .get<RawIndicatorFeature[]>(url, { headers: this.authHeaders() })
+          .pipe(
+            map((features) => (features ?? []).map((feature) => this.toFeatureTimeseries(feature))),
+          ),
+      { ttlMs: this.config.timeseriesTtlMs ?? IndicatorService.DEFAULT_TTL_MS },
+    );
   }
 
   private authHeaders(): Record<string, string> {

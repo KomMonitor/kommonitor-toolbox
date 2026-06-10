@@ -55,13 +55,28 @@ describe('IndicatorService', () => {
       expect(result).toEqual(expected);
     });
 
-    it('reflects the current token from the provider on each call', () => {
+    it('reflects the current token from the provider on the first (uncached) call', () => {
       token = 'rotated-token';
       service.getIndicators().subscribe();
 
       const req = httpMock.expectOne(`${baseUrl}/management/indicators`);
       expect(req.request.headers.get('Authorization')).toBe('Bearer rotated-token');
       req.flush([]);
+    });
+
+    it('serves repeated calls from the cache with a single HTTP request', () => {
+      const expected: Indicator[] = [{ indicatorId: '1' }];
+      let first: Indicator[] | undefined;
+      let second: Indicator[] | undefined;
+
+      service.getIndicators().subscribe((res) => (first = res));
+      service.getIndicators().subscribe((res) => (second = res));
+
+      // Only one outstanding request despite two subscribers.
+      httpMock.expectOne(`${baseUrl}/management/indicators`).flush(expected);
+
+      expect(first).toEqual(expected);
+      expect(second).toEqual(expected);
     });
   });
 
