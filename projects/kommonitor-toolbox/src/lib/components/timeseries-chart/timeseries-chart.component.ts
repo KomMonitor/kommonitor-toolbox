@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import type {
   EChartsOption,
   GridComponentOption,
@@ -41,7 +41,7 @@ const DEFAULT_LEGEND_CONFIG: LegendComponentOption = {
   selector: 'lib-timeseries-chart',
   imports: [NgxEchartsDirective],
   providers: [provideEchartsCore({ echarts })],
-  template: `<div echarts [options]="chartOptions" style="width: 100%; height: 100%;"></div>`,
+  template: `<div echarts [options]="chartOptions()" style="width: 100%; height: 100%;"></div>`,
   styles: `
     :host {
       display: block;
@@ -49,25 +49,22 @@ const DEFAULT_LEGEND_CONFIG: LegendComponentOption = {
     }
   `,
 })
-export class TimeseriesChartComponent implements OnChanges {
-  @Input() data: TimeseriesData = { labels: [], datasets: [] };
-  @Input() xAxisLabel = '';
-  @Input() yAxisLabel = '';
-  @Input() scaleToData = false;
-  @Input() legendConfig: LegendComponentOption = DEFAULT_LEGEND_CONFIG;
-  @Input() gridConfig: GridComponentOption = {};
+export class TimeseriesChartComponent {
+  readonly data = input<TimeseriesData>({ labels: [], datasets: [] });
+  readonly xAxisLabel = input('');
+  readonly yAxisLabel = input('');
+  readonly scaleToData = input(false);
+  readonly legendConfig = input<LegendComponentOption>(DEFAULT_LEGEND_CONFIG);
+  readonly gridConfig = input<GridComponentOption>({});
 
-  chartOptions: EChartsOption = {};
+  /** ECharts options, recomputed whenever any input signal changes. */
+  readonly chartOptions = computed<EChartsOption>(() => this.buildChartOptions());
 
-  ngOnChanges(): void {
-    this.buildChartOptions();
-  }
-
-  private buildChartOptions(): void {
+  private buildChartOptions(): EChartsOption {
     const series: SeriesOption[] = [];
     const legendData: string[] = [];
 
-    for (const ds of this.data.datasets) {
+    for (const ds of this.data().datasets) {
       legendData.push(ds.label);
       if (ds.type === 'interval') {
         series.push(...this.buildIntervalSeries(ds));
@@ -76,10 +73,10 @@ export class TimeseriesChartComponent implements OnChanges {
       }
     }
 
-    this.chartOptions = {
+    return {
       grid: this.buildGrid(),
       tooltip: { trigger: 'axis', formatter: this.buildTooltipFormatter() },
-      legend: { ...this.legendConfig, data: legendData },
+      legend: { ...this.legendConfig(), data: legendData },
       xAxis: this.buildXAxis(),
       yAxis: this.buildYAxis(),
       series,
@@ -145,37 +142,35 @@ export class TimeseriesChartComponent implements OnChanges {
   }
 
   private buildGrid(): EChartsOption['grid'] {
-    const hasLegend = this.legendConfig.show !== false;
+    const hasLegend = this.legendConfig().show !== false;
     return {
       containLabel: true,
-      left: this.yAxisLabel ? GRID_PADDING_AXIS_LABEL : GRID_PADDING,
+      left: this.yAxisLabel() ? GRID_PADDING_AXIS_LABEL : GRID_PADDING,
       right: GRID_RIGHT_PADDING,
       top: GRID_PADDING,
       bottom:
         (hasLegend ? GRID_PADDING_LEGEND : GRID_PADDING) +
-        (this.xAxisLabel ? GRID_PADDING_AXIS_LABEL : 0),
-      ...this.gridConfig,
+        (this.xAxisLabel() ? GRID_PADDING_AXIS_LABEL : 0),
+      ...this.gridConfig(),
     };
   }
 
   private buildXAxis(): EChartsOption['xAxis'] {
+    const xAxisLabel = this.xAxisLabel();
     return {
       type: 'category',
-      data: this.data.labels,
+      data: this.data().labels,
       boundaryGap: false,
-      ...(this.xAxisLabel
-        ? { name: this.xAxisLabel, nameLocation: 'middle', nameGap: X_AXIS_NAME_GAP }
-        : {}),
+      ...(xAxisLabel ? { name: xAxisLabel, nameLocation: 'middle', nameGap: X_AXIS_NAME_GAP } : {}),
     };
   }
 
   private buildYAxis(): EChartsOption['yAxis'] {
+    const yAxisLabel = this.yAxisLabel();
     return {
       type: 'value',
-      ...(this.scaleToData ? { scale: true } : {}),
-      ...(this.yAxisLabel
-        ? { name: this.yAxisLabel, nameLocation: 'middle', nameGap: Y_AXIS_NAME_GAP }
-        : {}),
+      ...(this.scaleToData() ? { scale: true } : {}),
+      ...(yAxisLabel ? { name: yAxisLabel, nameLocation: 'middle', nameGap: Y_AXIS_NAME_GAP } : {}),
     };
   }
 
