@@ -1,5 +1,6 @@
 import { componentWrapperDecorator, type Meta, type StoryObj } from '@storybook/angular';
-import { MapComponent, type MapLayer } from './map.component';
+import { MapComponent } from './map.component';
+import type { MapLayer } from './map.types';
 
 // ─── Shared Layer Configs ─────────────────────────────────────────────────────
 

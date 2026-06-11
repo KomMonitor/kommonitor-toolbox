@@ -3,59 +3,26 @@ import {
   DestroyRef,
   ElementRef,
   afterNextRender,
+  computed,
   effect,
   inject,
   input,
   signal,
   viewChild,
 } from '@angular/core';
-import { createEmpty, extend, isEmpty, type Extent } from 'ol/extent';
+import { type Extent } from 'ol/extent';
 import Feature, { type FeatureLike } from 'ol/Feature';
-import GeoJSON from 'ol/format/GeoJSON';
-import TileLayer from 'ol/layer/Tile';
-import VectorLayer from 'ol/layer/Vector';
+import type BaseLayer from 'ol/layer/Base';
 import Map from 'ol/Map';
 import type MapBrowserEvent from 'ol/MapBrowserEvent';
 import Overlay from 'ol/Overlay';
 import { fromLonLat } from 'ol/proj';
-import OSM from 'ol/source/OSM';
-import TileWMS from 'ol/source/TileWMS';
-import VectorSource from 'ol/source/Vector';
-import XYZ from 'ol/source/XYZ';
-import Fill from 'ol/style/Fill';
-import Stroke from 'ol/style/Stroke';
-import Style from 'ol/style/Style';
 import View from 'ol/View';
-import type {
-  MapCenter,
-  MapGeoJsonLayer,
-  MapLayer,
-  MapTooltip,
-  MapTooltipFn,
-  MapVectorStyle,
-  MapWmsLayer,
-} from './map.types';
-
-export type {
-  MapCenter,
-  MapGeoJsonLayer,
-  MapLayer,
-  MapOsmLayer,
-  MapTileLayer,
-  MapTooltip,
-  MapTooltipFn,
-  MapVectorStyle,
-  MapVectorStyleFn,
-  MapWmsLayer,
-} from './map.types';
+import { buildOlLayers, getTooltipFn, vectorDataExtent } from './map.layers';
+import type { MapCenter, MapLayer, MapTooltip } from './map.types';
 
 const DEFAULT_CENTER: MapCenter = { lon: 7.011555, lat: 51.459556 };
 const DEFAULT_ZOOM = 12;
-
-/** OL layer property under which a layer's tooltip resolver is stored. */
-const TOOLTIP_FN_KEY = 'kommonitorTooltipFn';
-/** Extra stroke width added to the hovered feature's outline. */
-const HOVER_STROKE_EXTRA = 1.5;
 
 /**
  * MapComponent renders an interactive OpenLayers map.
@@ -76,7 +43,6 @@ const HOVER_STROKE_EXTRA = 1.5;
  */
 @Component({
   selector: 'lib-map',
-  imports: [],
   template: `
     <div #mapContainer style="width: 100%; height: 100%;"></div>
     <div #tooltip class="map-tooltip">
@@ -138,6 +104,14 @@ export class MapComponent {
   /** Content of the hover tooltip; null hides it. */
   readonly tooltipContent = signal<MapTooltip | null>(null);
 
+  /** OL layers derived from the layer configs; rebuilt only when those change. */
+  private readonly olLayers = computed(() =>
+    buildOlLayers(this.layers(), {
+      projection: this.projection(),
+      isHovered: (feature) => feature === this.hoveredFeature,
+    }),
+  );
+
   private map?: Map;
   private tooltipOverlay?: Overlay;
   /** Feature whose tooltip is showing; drawn with a thicker outline. */
@@ -151,11 +125,11 @@ export class MapComponent {
   constructor() {
     // Create the OpenLayers map once the view (and its container element) exists.
     afterNextRender(() => {
-      const olLayers = this.buildOlLayers();
+      const olLayers = this.olLayers();
       this.map = new Map({
         target: this.mapContainer().nativeElement,
         view: new View({
-          center: fromLonLat([this.center().lon, this.center().lat]),
+          center: this.centerCoordinate(),
           zoom: this.zoom(),
           projection: this.projection(),
         }),
@@ -188,14 +162,10 @@ export class MapComponent {
       this.zoom();
       this.fitToData();
       this.fitPadding();
-      // buildOlLayers() reads the layers and projection signals.
-      const olLayers = this.buildOlLayers();
+      const olLayers = this.olLayers();
       if (!this.map) return;
 
-      this.map.getLayers().clear();
-      for (const layer of olLayers) {
-        this.map.addLayer(layer);
-      }
+      this.map.setLayers(olLayers);
       // The feature under the cursor may be gone after the rebuild.
       this.hideTooltip();
       this.syncView(olLayers);
@@ -208,12 +178,12 @@ export class MapComponent {
    * Fits the view to the data extent when {@link fitToData} is active and there is
    * vector content; otherwise applies the {@link center} / {@link zoom} inputs.
    */
-  private syncView(olLayers: ReturnType<MapComponent['buildOlLayers']>) {
+  private syncView(olLayers: BaseLayer[]) {
     if (!this.map) return;
     const view = this.map.getView();
 
     if (this.fitToData()) {
-      const extent = this.dataExtent(olLayers);
+      const extent = vectorDataExtent(olLayers);
       if (extent) {
         this.fitExtent(extent);
         return;
@@ -221,7 +191,7 @@ export class MapComponent {
     }
 
     this.pendingFitExtent = undefined;
-    view.setCenter(fromLonLat([this.center().lon, this.center().lat]));
+    view.setCenter(this.centerCoordinate());
     view.setZoom(this.zoom());
   }
 
@@ -256,7 +226,7 @@ export class MapComponent {
     let content: MapTooltip | null = null;
     let hovered: FeatureLike | undefined;
     this.map.forEachFeatureAtPixel(event.pixel, (feature, layer) => {
-      const tooltipFn = layer?.get(TOOLTIP_FN_KEY) as MapTooltipFn | undefined;
+      const tooltipFn = getTooltipFn(layer);
       content = tooltipFn ? tooltipFn(feature.getProperties()) : null;
       if (content !== null) {
         hovered = feature;
@@ -286,98 +256,8 @@ export class MapComponent {
     if (feature instanceof Feature) feature.changed();
   }
 
-  /** Combined extent of all vector layers' sources, or undefined when there is none. */
-  private dataExtent(olLayers: ReturnType<MapComponent['buildOlLayers']>): Extent | undefined {
-    const extent = createEmpty();
-    for (const layer of olLayers) {
-      if (layer instanceof VectorLayer) {
-        const sourceExtent = layer.getSource()?.getExtent();
-        if (sourceExtent) {
-          extend(extent, sourceExtent);
-        }
-      }
-    }
-    return isEmpty(extent) ? undefined : extent;
-  }
-
-  private buildOlLayers() {
-    const layers = this.layers();
-    if (layers.length === 0) {
-      return [new TileLayer({ source: new OSM() })];
-    }
-    return layers.map((cfg) => this.buildOlLayer(cfg));
-  }
-
-  private buildOlLayer(cfg: MapLayer) {
-    switch (cfg.type) {
-      case 'osm':
-        return new TileLayer({ source: new OSM() });
-
-      case 'tile':
-        return new TileLayer({
-          opacity: cfg.opacity ?? 1,
-          source: new XYZ({
-            url: cfg.url,
-            attributions: cfg.attribution ? [cfg.attribution] : [],
-          }),
-        });
-
-      case 'wms':
-        return this.buildWmsLayer(cfg);
-
-      case 'geojson':
-        return this.buildGeoJsonLayer(cfg);
-    }
-  }
-
-  private buildWmsLayer(cfg: MapWmsLayer) {
-    return new TileLayer({
-      opacity: cfg.opacity ?? 1,
-      source: new TileWMS({
-        url: cfg.url,
-        params: { LAYERS: cfg.layers, TILED: true },
-        attributions: cfg.attribution ? [cfg.attribution] : [],
-      }),
-    });
-  }
-
-  private buildGeoJsonLayer(cfg: MapGeoJsonLayer) {
-    const features = new GeoJSON().readFeatures(cfg.data, {
-      featureProjection: this.projection(),
-    });
-
-    const cfgStyle = cfg.style;
-    // Resolve per feature so the hovered one gets a thicker outline; without a
-    // configured style the OL default applies and hover highlighting is off.
-    const style = cfgStyle
-      ? (feature: FeatureLike) => {
-          const base =
-            typeof cfgStyle === 'function' ? cfgStyle(feature.getProperties()) : cfgStyle;
-          return this.toOlStyle(base, feature === this.hoveredFeature);
-        }
-      : undefined;
-
-    const layer = new VectorLayer({
-      opacity: cfg.opacity ?? 1,
-      source: new VectorSource({ features }),
-      style,
-    });
-    if (cfg.tooltip) {
-      layer.set(TOOLTIP_FN_KEY, cfg.tooltip);
-    }
-    return layer;
-  }
-
-  private toOlStyle(style: MapVectorStyle, hovered = false): Style {
-    const strokeWidth = style.strokeWidth ?? 1.5;
-    return new Style({
-      fill: new Fill({ color: style.fillColor ?? 'rgba(0, 100, 255, 0.15)' }),
-      stroke: new Stroke({
-        color: style.strokeColor ?? '#0064ff',
-        width: hovered ? strokeWidth + HOVER_STROKE_EXTRA : strokeWidth,
-      }),
-      // Lift the hovered feature so its outline is not covered by neighbours.
-      zIndex: hovered ? 1 : undefined,
-    });
+  private centerCoordinate() {
+    const { lon, lat } = this.center();
+    return fromLonLat([lon, lat]);
   }
 }
