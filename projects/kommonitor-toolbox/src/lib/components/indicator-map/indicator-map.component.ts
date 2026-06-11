@@ -7,12 +7,13 @@ import {
   type ClassificationConfig,
   DEFAULT_CLASSIFICATION,
   discreteLegend,
+  legendLabel,
   type LegendClass,
 } from '../../classification';
 import { IndicatorService } from '../../services/indicators/indicator';
 import { MapComponent } from '../map/map.component';
 import type { MapCenter, MapLayer } from '../map/map.types';
-import { allValuesOf, legendLabel, valueAt } from './indicator-map.types';
+import { allValuesOf, featureName, formatDe, valueAt } from './indicator-map.types';
 
 const DEFAULT_CENTER: MapCenter = { lon: 10.4515, lat: 51.1657 };
 const DEFAULT_ZOOM = 6;
@@ -129,6 +130,18 @@ export class IndicatorMapComponent {
               strokeColor: '#ffffff',
               strokeWidth: 1,
             }),
+            tooltip: (props) => {
+              const title = featureName(props);
+              const value = valueAt(props, timestamp);
+              if (!title && value === null) {
+                return null;
+              }
+              const unit = this.unit();
+              return {
+                title,
+                text: value === null ? 'Kein Wert' : `${formatDe(value)}${unit ? ` ${unit}` : ''}`,
+              };
+            },
           },
         ]);
 

@@ -51,6 +51,20 @@ export interface MapVectorStyle {
  */
 export type MapVectorStyleFn = (properties: Record<string, unknown>) => MapVectorStyle;
 
+/** Content of the hover tooltip shown for a feature. */
+export interface MapTooltip {
+  /** Emphasised first line, e.g. the feature name */
+  title: string;
+  /** Optional second line, e.g. the formatted value */
+  text?: string;
+}
+
+/**
+ * Resolves the hover tooltip per feature from its GeoJSON properties.
+ * Return `null` to show no tooltip for that feature.
+ */
+export type MapTooltipFn = (properties: Record<string, unknown>) => MapTooltip | null;
+
 export interface MapGeoJsonLayer {
   /** Vector layer sourced from an inline GeoJSON FeatureCollection */
   type: 'geojson';
@@ -63,6 +77,8 @@ export interface MapGeoJsonLayer {
   style?: MapVectorStyle | MapVectorStyleFn;
   /** Layer opacity between 0 and 1, default: 1 */
   opacity?: number;
+  /** Optional hover tooltip resolved per feature from its properties. */
+  tooltip?: MapTooltipFn;
 }
 
 export type MapLayer = MapOsmLayer | MapTileLayer | MapWmsLayer | MapGeoJsonLayer;
