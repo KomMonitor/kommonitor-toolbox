@@ -1,6 +1,3 @@
-import type { LegendClass } from '../../classification';
-import { formatDe } from '../indicator-bar-chart/indicator-bar-chart.types';
-
 export { formatDe } from '../indicator-bar-chart/indicator-bar-chart.types';
 
 /** Prefix under which timestamped indicator values are stored in the feature properties. */
@@ -53,18 +50,4 @@ export function extentOf(values: number[]): ValueExtent {
     return { min: 0, max: 0 };
   }
   return { min: Math.min(...values), max: Math.max(...values) };
-}
-
-/**
- * Human-readable value range of a legend class: `"< upper"` for the open-ended first
- * class, `"≥ lower"` for the open-ended last class, otherwise `"lower – upper"`.
- */
-export function legendLabel(entry: LegendClass): string {
-  if (entry.lower === null) {
-    return `< ${formatDe(entry.upper ?? 0)}`;
-  }
-  if (entry.upper === null) {
-    return `≥ ${formatDe(entry.lower)}`;
-  }
-  return `${formatDe(entry.lower)} – ${formatDe(entry.upper)}`;
 }

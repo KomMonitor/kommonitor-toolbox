@@ -1,6 +1,12 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+}
+
+.chart-wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .status {
@@ -10,4 +16,37 @@
 
 .status--error {
   color: #b00020;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding: 0.5rem 0.25rem 0;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend__swatch {
+  flex: 0 0 auto;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 2px;
+}
+
+.legend__label {
+  font-variant-numeric: tabular-nums;
+}
+
+.legend__unit {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: #333;
 }

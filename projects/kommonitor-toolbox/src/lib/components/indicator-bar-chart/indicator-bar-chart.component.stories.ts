@@ -73,6 +73,17 @@ const meta: Meta<IndicatorBarChartComponent> = {
       control: 'boolean',
       description: 'Linie des rechnerischen Durchschnitts anzeigen.',
     },
+    showLegend: {
+      control: 'boolean',
+      description: 'Farb-Legende der Klassifizierung unterhalb des Diagramms anzeigen.',
+    },
+    classification: {
+      control: 'object',
+      description:
+        'Einfärbung: Farbpalette (paletteId), Klassifizierungsmethode (method), Klassenzahl ' +
+        '(numberOfClasses) und ob über die gesamte Zeitreihe klassifiziert wird ' +
+        '(classifyAcrossTimeseries).',
+    },
   },
   args: {
     indicatorId: INDICATOR_ID,
@@ -80,6 +91,7 @@ const meta: Meta<IndicatorBarChartComponent> = {
     timestamp: TIMESTAMP,
     showBarLabels: true,
     showMeanLine: true,
+    showLegend: true,
   },
 };
 
@@ -104,5 +116,21 @@ export const OhneDurchschnittslinie: Story = {
   name: 'Ohne Durchschnittslinie',
   args: {
     showMeanLine: false,
+  },
+};
+
+/**
+ * Alternative Klassifizierung: Gelb–Orange–Rot-Palette mit Quantil-Methode und 4 Klassen.
+ * Balken und Legende färben sich gemäß classification-Input.
+ */
+export const AndereKlassifizierung: Story = {
+  name: 'Andere Klassifizierung',
+  args: {
+    classification: {
+      paletteId: 'YlOrRd',
+      method: 'quantile',
+      numberOfClasses: 4,
+      classifyAcrossTimeseries: true,
+    },
   },
 };

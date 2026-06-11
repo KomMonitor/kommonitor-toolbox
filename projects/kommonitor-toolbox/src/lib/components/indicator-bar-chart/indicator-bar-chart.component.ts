@@ -2,12 +2,20 @@ import { Component, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { EMPTY, combineLatest, forkJoin } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import {
+  classify,
+  type ClassificationConfig,
+  DEFAULT_CLASSIFICATION,
+  discreteLegend,
+  legendLabel,
+  type LegendClass,
+} from '../../classification';
 import { IndicatorService } from '../../services/indicators/indicator';
 import { BarChartComponent } from '../bar-chart/bar-chart.component';
 import type { BarChartData, BarChartReferenceValue } from '../bar-chart/bar-chart.types';
 import {
+  allTimeseriesValues,
   average,
-  buildGradient,
   formatDe,
   toSortedFeatureValues,
 } from './indicator-bar-chart.types';
@@ -31,6 +39,10 @@ export class IndicatorBarChartComponent {
   readonly showBarLabels = input(true);
   /** Show or hide the computed average ("rechnerischer Durchschnitt") reference line */
   readonly showMeanLine = input(true);
+  /** Show or hide the classification colour legend below the chart */
+  readonly showLegend = input(true);
+  /** Coloring configuration: palette, classification method and number of classes. */
+  readonly classification = input<ClassificationConfig>(DEFAULT_CLASSIFICATION);
 
   private readonly indicatorService = inject(IndicatorService);
 
@@ -39,6 +51,12 @@ export class IndicatorBarChartComponent {
   readonly unit = signal('');
   readonly loading = signal(false);
   readonly error = signal('');
+  /** Whether any feature carried a numeric value at the timestamp (controls legend visibility). */
+  readonly hasData = signal(false);
+  /** Discrete legend entries (colour + value range) for the active classification. */
+  readonly legendClasses = signal<LegendClass[]>([]);
+  /** Formats a legend class as a German value-range label. */
+  readonly legendLabel = legendLabel;
 
   /** Formats the in-bar label as "<feature name>  <value>" with German number formatting. */
   readonly labelFormatter = (params: { name?: string; value?: unknown }): string => {
@@ -51,6 +69,7 @@ export class IndicatorBarChartComponent {
       indicatorId: toObservable(this.indicatorId),
       spatialUnitId: toObservable(this.spatialUnitId),
       timestamp: toObservable(this.timestamp),
+      config: toObservable(this.classification),
     })
       .pipe(
         filter(({ indicatorId, spatialUnitId, timestamp }) =>
@@ -60,12 +79,12 @@ export class IndicatorBarChartComponent {
           this.loading.set(true);
           this.error.set('');
         }),
-        switchMap(({ indicatorId, spatialUnitId, timestamp }) =>
+        switchMap(({ indicatorId, spatialUnitId, timestamp, config }) =>
           forkJoin({
             timeseries: this.indicatorService.getIndicatorTimeseries(indicatorId, spatialUnitId),
             indicators: this.indicatorService.getIndicators(),
           }).pipe(
-            map((result) => ({ ...result, indicatorId, timestamp })),
+            map((result) => ({ ...result, indicatorId, timestamp, config })),
             catchError(() => {
               this.error.set('Die Indikatordaten konnten nicht geladen werden.');
               this.loading.set(false);
@@ -75,13 +94,21 @@ export class IndicatorBarChartComponent {
         ),
         takeUntilDestroyed(),
       )
-      .subscribe(({ timeseries, indicators, indicatorId, timestamp }) => {
+      .subscribe(({ timeseries, indicators, indicatorId, timestamp, config }) => {
         const indicator = indicators.find((i) => i.indicatorId === indicatorId);
         const indicatorName = indicator?.indicatorName ?? '';
         this.unit.set(indicator?.unit ?? indicator?.metadata?.unit ?? '');
 
         const features = toSortedFeatureValues(timeseries, timestamp);
         const values = features.map((f) => f.value);
+        this.hasData.set(values.length > 0);
+
+        // Classify across the whole timeseries when requested, else only the selected date.
+        const classificationValues = config.classifyAcrossTimeseries
+          ? allTimeseriesValues(timeseries)
+          : values;
+        const classification = classify(classificationValues, config);
+        this.legendClasses.set(discreteLegend(classification.breaks, classification.colors));
 
         this.data.set({
           labels: features.map((f) => f.name),
@@ -89,7 +116,7 @@ export class IndicatorBarChartComponent {
             {
               label: indicatorName,
               data: values,
-              color: buildGradient(features.length),
+              color: values.map((value) => classification.colorFor(value)),
             },
           ],
         });

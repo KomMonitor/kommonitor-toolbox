@@ -1,7 +1,7 @@
 import type { IndicatorFeatureTimeseries } from '../../services/indicators/indicator';
 import {
+  allTimeseriesValues,
   average,
-  buildGradient,
   formatDe,
   toSortedFeatureValues,
 } from './indicator-bar-chart.types';
@@ -32,17 +32,30 @@ describe('indicator-bar-chart helpers', () => {
     });
   });
 
-  describe('buildGradient', () => {
-    it('returns one colour per bar', () => {
-      expect(buildGradient(9)).toHaveLength(9);
+  describe('allTimeseriesValues', () => {
+    it('collects every finite value across all features and dates', () => {
+      const features = [
+        feature('a', 'A', [
+          { date: '2023', value: 1 },
+          { date: '2024', value: 2 },
+        ]),
+        feature('b', 'B', [{ date: '2024', value: 3 }]),
+      ];
+      expect(allTimeseriesValues(features)).toEqual([1, 2, 3]);
     });
 
-    it('returns an empty array for a non-positive count', () => {
-      expect(buildGradient(0)).toEqual([]);
+    it('drops null values', () => {
+      const features = [
+        feature('a', 'A', [
+          { date: '2023', value: null },
+          { date: '2024', value: 5 },
+        ]),
+      ];
+      expect(allTimeseriesValues(features)).toEqual([5]);
     });
 
-    it('produces rgb() colour strings', () => {
-      expect(buildGradient(3).every((c) => /^rgb\(\d+, \d+, \d+\)$/.test(c))).toBe(true);
+    it('returns an empty array when there are no features', () => {
+      expect(allTimeseriesValues([])).toEqual([]);
     });
   });
 

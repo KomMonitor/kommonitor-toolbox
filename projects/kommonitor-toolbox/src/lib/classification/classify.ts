@@ -75,3 +75,29 @@ export function discreteLegend(breaks: number[], colors: string[]): LegendClass[
     upper: i === colors.length - 1 ? null : breaks[i],
   }));
 }
+
+/** Default legend number formatter: German locale with two fraction digits. */
+function defaultLegendFormat(value: number): string {
+  return new Intl.NumberFormat('de-DE', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
+
+/**
+ * Human-readable value range of a legend class: `"< upper"` for the open-ended first
+ * class, `"≥ lower"` for the open-ended last class, otherwise `"lower – upper"`.
+ * Pass `format` to control number formatting (defaults to a German two-digit format).
+ */
+export function legendLabel(
+  entry: LegendClass,
+  format: (value: number) => string = defaultLegendFormat,
+): string {
+  if (entry.lower === null) {
+    return `< ${format(entry.upper ?? 0)}`;
+  }
+  if (entry.upper === null) {
+    return `≥ ${format(entry.lower)}`;
+  }
+  return `${format(entry.lower)} – ${format(entry.upper)}`;
+}

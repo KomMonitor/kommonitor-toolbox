@@ -3,19 +3,35 @@
 } @else if (loading()) {
   <p class="status">Daten werden geladen …</p>
 } @else {
-  <lib-bar-chart
-    [data]="data()"
-    [referenceValue]="showMeanLine() ? referenceValue() : undefined"
-    [yAxisLabel]="unit()"
-    [showLegend]="false"
-    [showCategoryLabels]="false"
-    [showValueLabels]="showBarLabels()"
-    valueLabelPosition="insideBottom"
-    [valueLabelRotate]="90"
-    valueLabelAlign="left"
-    valueLabelVerticalAlign="middle"
-    [valueLabelDistance]="8"
-    [valueLabelFormatter]="labelFormatter"
-    [showToolbox]="true"
-  ></lib-bar-chart>
+  <div class="chart-wrapper">
+    <lib-bar-chart
+      [data]="data()"
+      [referenceValue]="showMeanLine() ? referenceValue() : undefined"
+      [yAxisLabel]="unit()"
+      [showLegend]="false"
+      [showCategoryLabels]="false"
+      [showValueLabels]="showBarLabels()"
+      valueLabelPosition="insideBottom"
+      [valueLabelRotate]="90"
+      valueLabelAlign="left"
+      valueLabelVerticalAlign="middle"
+      [valueLabelDistance]="8"
+      [valueLabelFormatter]="labelFormatter"
+      [showToolbox]="true"
+    ></lib-bar-chart>
+  </div>
+
+  @if (showLegend() && hasData()) {
+    <div class="legend">
+      @for (cls of legendClasses(); track $index) {
+        <span class="legend__item">
+          <span class="legend__swatch" [style.background]="cls.color"></span>
+          <span class="legend__label">{{ legendLabel(cls) }}</span>
+        </span>
+      }
+      @if (unit()) {
+        <span class="legend__unit">{{ unit() }}</span>
+      }
+    </div>
+  }
 }

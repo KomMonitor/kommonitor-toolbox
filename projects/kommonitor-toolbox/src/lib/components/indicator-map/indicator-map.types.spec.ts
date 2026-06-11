@@ -1,5 +1,4 @@
-import type { LegendClass } from '../../classification';
-import { allValuesOf, legendLabel, valueAt } from './indicator-map.types';
+import { allValuesOf, valueAt } from './indicator-map.types';
 
 describe('indicator-map helpers', () => {
   describe('valueAt', () => {
@@ -35,26 +34,6 @@ describe('indicator-map helpers', () => {
 
     it('returns an empty array when there are no DATE_* values', () => {
       expect(allValuesOf({ ID: '1' })).toEqual([]);
-    });
-  });
-
-  describe('legendLabel', () => {
-    const cls = (lower: number | null, upper: number | null): LegendClass => ({
-      color: 'rgb(0, 0, 0)',
-      lower,
-      upper,
-    });
-
-    it('renders the open-ended first class as "< upper"', () => {
-      expect(legendLabel(cls(null, 2.8))).toBe('< 2,80');
-    });
-
-    it('renders the open-ended last class as "≥ lower"', () => {
-      expect(legendLabel(cls(8.2, null))).toBe('≥ 8,20');
-    });
-
-    it('renders an inner class as "lower – upper"', () => {
-      expect(legendLabel(cls(2.8, 4.6))).toBe('2,80 – 4,60');
     });
   });
 });

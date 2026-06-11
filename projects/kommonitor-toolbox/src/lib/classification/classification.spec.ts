@@ -1,5 +1,5 @@
 import { classIndexOf, computeBreaks } from './breaks';
-import { classify, discreteLegend } from './classify';
+import { classify, discreteLegend, legendLabel } from './classify';
 import { COLOR_PALETTES, paletteById, paletteColors } from './palettes';
 import { hexToRgb } from './color';
 
@@ -108,6 +108,30 @@ describe('classification', () => {
       expect(legend[0].lower).toBeNull();
       expect(legend[4].upper).toBeNull();
       expect(legend[1]).toEqual({ color: legend[1].color, lower: 2.8, upper: 4.6 });
+    });
+  });
+
+  describe('legendLabel', () => {
+    const cls = (lower: number | null, upper: number | null) => ({
+      color: 'rgb(0, 0, 0)',
+      lower,
+      upper,
+    });
+
+    it('renders the open-ended first class as "< upper"', () => {
+      expect(legendLabel(cls(null, 2.8))).toBe('< 2,80');
+    });
+
+    it('renders the open-ended last class as "≥ lower"', () => {
+      expect(legendLabel(cls(8.2, null))).toBe('≥ 8,20');
+    });
+
+    it('renders an inner class as "lower – upper"', () => {
+      expect(legendLabel(cls(2.8, 4.6))).toBe('2,80 – 4,60');
+    });
+
+    it('uses a custom formatter when provided', () => {
+      expect(legendLabel(cls(2.8, 4.6), (v) => v.toFixed(1))).toBe('2.8 – 4.6');
     });
   });
 });
